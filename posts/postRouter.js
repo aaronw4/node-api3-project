@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+ res.status(200).json(req.post);
 });
 
 router.delete('/:id', (req, res) => {
@@ -28,7 +28,20 @@ router.put('/:id', (req, res) => {
 
 
 function validatePostId(req, res, next) {
-  // do your magic!
+  const {id} = req.params;
+
+  db.getById(id)
+    .then(post => {
+      if (post) {
+      req.post = post;
+      next();
+      } else {
+        res.status(404).json({message: "invalid post id"});
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: 'There is an error in your request.'});
+    });
 }
 
 module.exports = router;

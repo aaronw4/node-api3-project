@@ -49,7 +49,7 @@ router.get('/:id', validateUserId, (req, res) => {
 
 router.get('/:id/posts', validateUserId, (req,res) => {
   
-  postDB.getById(req.params.id)
+  db.getUserPosts(req.params.id)
     .then(post => {
       res.status(200).json(post);
     })
@@ -92,6 +92,7 @@ router.put('/:id', validateUserId, (req, res) => {
 
 function validateUserId(req, res, next) {
   const {id} = req.params;
+  
   db.getById(id)
     .then(user => {
       if (user) {
