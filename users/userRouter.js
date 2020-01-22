@@ -74,7 +74,9 @@ router.put('/:id', validateUserId, (req, res) => {
   const userInfo = req.body;
 
   if (!userInfo) {
-    res.status(400).json({ message: "missing user data" })
+    res.status(400).json({ 
+      error: "Missing user data" 
+    })
   }
 
   db.update(req.params.id, userInfo)
@@ -83,7 +85,7 @@ router.put('/:id', validateUserId, (req, res) => {
     })
     .catch(err => {
       res.status(500).json({
-        error: "The post information could not be modified."
+        error: "The user information could not be modified."
       })
     })
 });
