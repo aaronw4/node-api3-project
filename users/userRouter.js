@@ -65,7 +65,7 @@ router.delete('/:id', validateUserId, (req, res) => {
     })
     .catch(err => {
       res.status(500).json({
-        error: "The post could not be removed."
+        error: "The user could not be removed."
       })
     })
 });
