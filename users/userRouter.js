@@ -49,8 +49,22 @@ router.delete('/:id', validateUserId, (req, res) => {
     })
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validateUserId, (req, res) => {
+  const userInfo = req.body;
+
+  if (!userInfo) {
+    res.status(400).json({ message: "missing user data" })
+  }
+
+  db.update(req.params.id, userInfo)
+    .then(user => {
+      res.status(200).json(user)
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: "The post information could not be modified."
+      })
+    })
 });
 
 //custom middleware
