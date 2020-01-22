@@ -55,7 +55,25 @@ function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+  const userInfo = req.body;
+  const {name} = req.body;
+
+  if (!name) {
+    res.status(400).json({message: "missing required name field"});
+  };
+
+  db.insert(userInfo)
+    .then(user => {
+      if (user) {
+        req.user = user;
+        next();
+      } else {
+        res.status(400).json({message: "missing user data"});
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: 'There is an error in your request.'});
+    })
 }
 
 function validatePost(req, res, next) {
