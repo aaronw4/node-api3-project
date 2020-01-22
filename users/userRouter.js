@@ -3,13 +3,14 @@ const db = require('./userDb');
 const router = express.Router();
 
 router.post('/', validateUser, (req, res) => {
-  db.insert(req.user)
+
+  db.insert(req.body)
     .then(user => {
       res.status(200).json(user);
     })
     .catch(err => {
       res.status(500).json({
-        message: "Error adding user."
+        error: 'Something went wrong.'
       })
     })
 });
@@ -28,8 +29,8 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validateUserId, (req, res) => {
+  res.status(200).json(req.user);
 });
 
 router.get('/:id/posts', (req, res) => {
@@ -63,25 +64,18 @@ function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  const userInfo = req.body;
   const {name} = req.body;
+  const body = req.body;
+
+  if (!body) {
+    res.status(400).json({ message: "missing user data" })
+  }
 
   if (!name) {
     res.status(400).json({message: "missing required name field"});
-  };
+  };  
 
-  db.insert(userInfo)
-    .then(user => {
-      if (user) {
-        req.user = user;
-        next();
-      } else {
-        res.status(400).json({message: "missing user data"});
-      }
-    })
-    .catch(err => {
-      res.status(500).json({message: 'There is an error in your request.'});
-    })
+  next();
 }
 
 
