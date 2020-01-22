@@ -35,22 +35,28 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) =>{
 
 router.get('/', (req, res) => {
   db.get()
-  .then(users => {
-      res.status(200).json(users);
-  })
-  .catch(err => {
-      res.status(500).json({error: 'The users information could not be retrieved'});
-  });
+    .then(users => {
+        res.status(200).json(users);
+    })
+    .catch(err => {
+        res.status(500).json({error: 'The users information could not be retrieved'});
+    });
 });
 
 router.get('/:id', validateUserId, (req, res) => {
   res.status(200).json(req.user);
 });
 
-// MOVED TO postRouter.js
-// router.get('/:id/posts', (req, res) => {
-//   // do your magic!
-// });
+router.get('/:id/posts', validateUserId, (req,res) => {
+  
+  postDB.getById(req.params.id)
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(err => {
+      res.status(500).json({error: 'The posts could not be retrieved.'})
+    })
+});
 
 router.delete('/:id', validateUserId, (req, res) => {
   db.remove(req.params.id)
