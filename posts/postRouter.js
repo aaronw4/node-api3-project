@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  // do your magic!
+  db
 });
 
 router.get('/:id', (req, res) => {
@@ -19,6 +19,10 @@ router.put('/:id', (req, res) => {
 });
 
 // custom middleware
+
+function validatePost(req, res, next) {
+  // do your magic!
+}
 
 function validatePostId(req, res, next) {
   // do your magic!

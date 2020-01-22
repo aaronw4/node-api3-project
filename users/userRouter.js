@@ -1,9 +1,17 @@
 const express = require('express');
-const db = require('./userDb')
+const db = require('./userDb');
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
+router.post('/', validateUser, (req, res) => {
+  db.insert(req.user)
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Error adding user."
+      })
+    })
 });
 
 router.post('/:id/posts', (req, res) => {
@@ -76,9 +84,6 @@ function validateUser(req, res, next) {
     })
 }
 
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 
 module.exports = router;
