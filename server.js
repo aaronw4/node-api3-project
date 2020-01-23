@@ -11,7 +11,7 @@ server.use('/api/users', userRouter);
 server.use('/api/posts', postRouter);
 
 function logger(req, res, next) {
-  console.log(`${req.method} from ${req.get('Origin')} at ${Date()}`);
+  console.log(`${req.method} from ${req.get('Origin')} at ${new Date().toISOString()}`);
   next();
 }
 
